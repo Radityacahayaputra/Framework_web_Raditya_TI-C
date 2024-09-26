@@ -29,29 +29,30 @@
               <form method="POST" action="your_action_page.php">
                   <div class="form-group">
                       <label for="NIM">NIM</label>
-                      <input type="number" class="form-control" id="NIM" name="nim" placeholder="Masukkan NIM">
+                      <input type="number" class="form-control" id="NIM" name="nim" placeholder="Masukkan NIM" required>
                   </div>
                   <div class="form-group">
                       <label for="Nama_mahasiswa">Nama Mahasiswa</label>
-                      <input type="text" class="form-control" id="Nama_mahasiswa" name="nama" placeholder="Masukkan Nama Mahasiswa">
+                      <input type="text" class="form-control" id="Nama_mahasiswa" name="nama" placeholder="Masukkan Nama Mahasiswa" required>
                   </div>
                   <div class="form-group">
                       <label for="Prodi">Prodi</label>
-                      <input type="text" class="form-control" id="Prodi" name="prodi" placeholder="Masukkan Prodi">
+                      <input type="text" class="form-control" id="Prodi" name="prodi" placeholder="Masukkan Prodi" required>
                   </div>
                   <div class="form-group">
                       <label for="Semester">Semester</label>
-                      <input type="number" class="form-control" id="Semester" name="semester" placeholder="Masukkan Semester">
+                      <input type="number" class="form-control" id="Semester" name="semester" placeholder="Masukkan Semester" required>
                   </div>
                   <div class="form-group">
                       <label for="SKS">SKS</label>
-                      <input type="number" class="form-control" id="SKS" name="sks" placeholder="Masukkan SKS">
+                      <input type="number" class="form-control" id="SKS" name="sks" placeholder="Masukkan SKS" required>
+                  </div>
+                  <!-- Button submit harus berada di dalam form -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                   </div>
               </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
               </div>
             </div>
           </div>
@@ -70,13 +71,17 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($mahasiswa as $mhs): ?>
+            <?php foreach ($Mahasiswa as $mhs): ?>
               <tr>
-                <th scope="row"><?= $mhs['nim']; ?></th>
-                <td><?= $mhs['nama']; ?></td>
-                <td><?= $mhs['prodi']; ?></td>
-                <td><?= $mhs['sks']; ?></td>
-                <td><?= $mhs['semester']; ?></td>
+                <th scope="row"><?= $mhs->nim; ?></th> <!-- Jika $mhs adalah objek -->
+                <td><?= $mhs->nama; ?></td>
+                <td><?= $mhs->prodi; ?></td>
+                <td><?= $mhs->sks; ?></td>
+                <td><?= $mhs->semester; ?></td>
+                <td>            
+                  <a href="<?= base_url(); ?>Mahasiswa/ubah/<?= $mhs->nim; ?>" class="btn btn-success">Ubah</a>
+                  <a href="<?= base_url(); ?>Mahasiswa/hapus/<?= $mhs->nim; ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin');">Hapus</a>
+                </td>
               </tr>
             <?php endforeach; ?>
           </tbody>

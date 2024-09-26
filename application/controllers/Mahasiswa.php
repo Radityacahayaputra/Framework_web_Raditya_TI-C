@@ -4,6 +4,8 @@ class Mahasiswa extends CI_Controller
     public function index()
     {
         $data['judul'] = 'Halaman Mahasiswa';
+        $this->load->model('Mahasiswa_model');
+        $data['Mahasiswa'] = $this->Mahasiswa_model->getallMahasiswa();
 
         // Definisikan data mahasiswa (data dummy sebagai contoh)
         $data['mahasiswa'] = [
