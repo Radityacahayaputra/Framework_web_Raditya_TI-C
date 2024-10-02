@@ -20,4 +20,23 @@ class Mahasiswa_model extends CI_Model {
     {
         return $this->db->insert('tbradit', $data);
     }
+       public function UbahDataMahasiswa($nim)
+    {
+       $data = [
+        "nim" => $this->input->post('nim', true),
+        "nama" => $this->input->post('nama', true),
+        "prodi" => $this->input->post('prodi', true),
+        "sks" => (int)$this->input->post('sks', true),
+        "semester" => (int)$this->input->post('semester', true),
+       ];
+       $this->db->where('nim', $nim);
+       $this->db->update('tbradit', $data);
+    }
+    public function hapusDataMahasiswa($nim)
+    {
+        // Hapus data dari tabel mahasiswa berdasarkan NIM
+        $this->db->where('nim', $nim);
+        $this->db->delete('tbradit'); // Ganti 'tbradit' dengan nama tabel yang sesuai
+    }
+    
 }
