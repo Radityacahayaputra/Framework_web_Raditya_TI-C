@@ -1,42 +1,55 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php 
 
-class Mahasiswa_model extends CI_Model {
-
-    public function __construct()
+  /**
+   * summary
+   */
+    class mahasiswa_model extends CI_model{
+        public function getAllMahasiswa()
     {
-        parent::__construct();
+        // //menggunakan cara pertama
+        // $query = $this->db->get->('mahasiswa');
+        // return &query->result_array();
+        // menggunakan cara cepat methode chaining // pemanggil data base
+        return $this->db->get('mahasiswa')->result_array();
+        
     }
 
-    // Mendapatkan semua data mahasiswa
-    public function getAllMahasiswa()
-    {
-        $query = $this->db->get('tbradit'); // Ganti dengan nama tabel yang sesuai
-        return $query->result(); // Mengembalikan hasil sebagai array objek
-    }
+        public function getAllJurusan()
+        
+        {
+            return $this->db->get('jurusan')->result_array();
 
-    // Menyimpan data mahasiswa baru
-    public function insertMahasiswa($data)
-    {
-        return $this->db->insert('tbradit', $data);
-    }
-       public function UbahDataMahasiswa($nim)
-    {
-       $data = [
-        "nim" => $this->input->post('nim', true),
-        "nama" => $this->input->post('nama', true),
-        "prodi" => $this->input->post('prodi', true),
-        "sks" => (int)$this->input->post('sks', true),
-        "semester" => (int)$this->input->post('semester', true),
-       ];
-       $this->db->where('nim', $nim);
-       $this->db->update('tbradit', $data);
-    }
-    public function hapusDataMahasiswa($nim)
-    {
-        // Hapus data dari tabel mahasiswa berdasarkan NIM
-        $this->db->where('nim', $nim);
-        $this->db->delete('tbradit'); // Ganti 'tbradit' dengan nama tabel yang sesuai
-    }
+        }
+
+        public function cariDataMahasiswa()
+        {
+            $keyword = $this->input->post('keyword', true);
+            $this->db->like('matakuliah', $keyword);
+            $this->db->or_like('semester', $keyword);
+            $this->db->or_like('jurusan', $keyword);
+            return $this->db->get('mahasiswa')->result_array();
+        }
     
-}
+
+        
+        public function ubahDataMahasiswa()
+        {
+            $data= [
+                "kode" => $this->input->post('kode', true),
+                "matakuliah" => $this->input->post('matakuliah', true),
+                "sks" => $this->input->post('sks', true),
+                "semester" => $this->input->post('semester', true),
+                "jurusan" => $this->input->post('jurusan', true),
+
+            ];
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('mahasiswa',$data);
+        }
+        
+        public function hapusDataMahasiswa($id)
+        {
+            $this->db->where('id',$id);
+            $this->db->delete('mahasiswa');
+
+        }
+    }

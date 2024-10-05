@@ -1,80 +1,56 @@
 <?php
-class Mahasiswa extends CI_Controller
+
+class mahasiswa extends CI_Controller
 {
+
     public function __construct()
     {
-        parent::__construct();
+    	parent::__construct();
         $this->load->model('Mahasiswa_model');
-        $this->load->library('form_validation'); 
+    
     }
-
-    public function index()
-    {
-        $data['judul'] = 'Halaman Mahasiswa';
-        $data['Mahasiswa'] = $this->Mahasiswa_model->getAllMahasiswa();
-
-        // Aturan validasi
-        $this->form_validation->set_rules('nim', 'NIM', 'required');
-        $this->form_validation->set_rules('nama', 'Nama', 'required');
-        $this->form_validation->set_rules('prodi', 'Prodi', 'required');
-        $this->form_validation->set_rules('sks', 'SKS', 'required|numeric');
-        $this->form_validation->set_rules('semester', 'Semester', 'required|numeric');
-
-        // Jika validasi gagal, kembali ke tampilan
-        if ($this->form_validation->run() == FALSE) {
-            // Load views
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Mahasiswa/index', $data);
-            $this->load->view('Templates/footer');
-        } else {
-            // Jika validasi berhasil, proses data
-            $data = [
-                'nim' => $this->input->post('nim'),
-                'nama' => $this->input->post('nama'),
-                'prodi' => $this->input->post('prodi'),
-                'sks' => (int)$this->input->post('sks'),
-                'semester' => (int)$this->input->post('semester'),
-            ];
-
-            // Simpan data mahasiswa
-            $this->Mahasiswa_model->insertMahasiswa($data);
-
-            // Set flashdata untuk notifikasi
-            $this->session->set_flashdata('message', 'Data berhasil ditambahkan');
-            redirect('Mahasiswa/index');
-        }
-    }
-
-    public function Ubah($nim)
-    {
-        // Validasi form saat mengubah data
-        $this->form_validation->set_rules('nim', 'NIM', 'required');
-        $this->form_validation->set_rules('nama', 'Nama', 'required');
-        $this->form_validation->set_rules('prodi', 'Prodi', 'required');
-        $this->form_validation->set_rules('sks', 'SKS', 'required|numeric');
-        $this->form_validation->set_rules('semester', 'Semester', 'required|numeric');
-
-        if ($this->form_validation->run() == FALSE) {
-            // Tampilkan view edit jika validasi gagal
-            $this->load->view('Templates/header');
-            $this->load->view('Mahasiswa/edit');
-            $this->load->view('Templates/footer');
-        } else {
-            // Panggil method di model untuk mengubah data
-            $this->Mahasiswa_model->UbahDataMahasiswa($nim);
+	 public function index()
+	{	
+		$data['judul'] = 'Halaman mahasiswa';
+		    $data['mahasiswa']=$this->Mahasiswa_model->getAllMahasiswa();
+            if($this->input->post('keyword'))
+                $data['mahasiswa']= $this->Mahasiswa_model->cariDataMahasiswa();
             
-            // Set flashdata untuk notifikasi
-            $this->session->set_flashdata('message', 'Data berhasil diubah');
-            redirect('Mahasiswa/index');
+		    $data['jurusan']=$this->Mahasiswa_model->getAllJurusan();
+        $this->form_validation->set_rules('kode','Kode','required|is_unique[mahasiswa.kode]');
+        $this->form_validation->set_rules('matakuliah','Matakuliah','required|is_unique[mahasiswa.matakuliah]');
+        $this->form_validation->set_rules('sks','Sks','required');
+        $this->form_validation->set_rules('semester','Semester','required');
+        $this->form_validation->set_rules('jurusan','jurusan','required');
+        if($this->form_validation->run()==false){    
+    	$this->load->view('templates/header',$data);
+    	$this->load->view('mahasiswa/index',$data);
+    	$this->load->view('templates/footer');
+        }else {
+            $data=[
+            	'kode' => $this->input->post('kode'),
+                'matakuliah' => $this->input->post('matakuliah'),
+                'sks' => $this->input->post('sks'),
+                'semester' => $this->input->post('semester'),
+                'jurusan' => $this->input->post('jurusan'), 
+                  
+            ];
+            $this->db->insert('mahasiswa',$data);
+            $this->session->set_flashdata('flash','ditambahkan');
+            redirect('mahasiswa');
         }
     }
-    public function hapus($nim)
-{
-    // Panggil model untuk menghapus data berdasarkan NIM
-    $this->Mahasiswa_model->hapusDataMahasiswa($nim);
 
-    // Redirect ke halaman mahasiswa setelah data dihapus
-    redirect('Mahasiswa/index');
-}
-
-}
+    public function Ubah()
+    {
+        $this->Mahasiswa_model->ubahDataMahasiswa($id);
+        $this->session->set_flashdata('flash','diubah');
+        redirect('mahasiswa');
+    }
+    public function hapus($id)
+    {
+        $this->Mahasiswa_model->hapusDataMahasiswa($id);
+        $this->session->set_flashdata('flash','dihapus');
+        redirect('mahasiswa');
+    }
+ }

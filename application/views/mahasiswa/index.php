@@ -1,155 +1,193 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mahasiswa</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
 
 <div class="container">
-    <div class="row mt-5">
-        <div class="col mt-4">
+	<div class="row mt-5">
+		<div class="col mt-4">
+      <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Notifikasi Flashdata -->
-        <?php if ($this->session->flashdata('message')): ?>
-            <div class="alert alert-success"><?= $this->session->flashdata('message'); ?></div>
-        <?php endif; ?>
+		<!--awal validasi eror-->
+		<?php if(validation_errors()):?>
+		<div class="alert alert-danger" role="alert">
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			<?= validation_errors();?>
+		</div>
+		<?php endif;?>
+		<!--akhir validasi eror-->
 
-        <!-- Button trigger modal Tambah Data -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Tambah Data
-        </button>
+      <div class="row mt-3">
+         <div class="col-md-8">
 
-        <!-- Modal Tambah Data -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Data</h5>               
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <form action="<?= base_url('Mahasiswa') ?>" method="post">
-                  <div class="form-group">
-                      <label for="NIM">NIM</label>
-                      <input type="number" class="form-control" id="NIM" name="nim" placeholder="Masukkan NIM" required>
-                  </div>
-                  <div class="form-group">
-                      <label for="Nama_mahasiswa">Nama Mahasiswa</label>
-                      <input type="text" class="form-control" id="Nama_mahasiswa" name="nama" placeholder="Masukkan Nama Mahasiswa" required>
-                  </div>
-                  <div class="form-group">
-                      <label for="Prodi">Prodi</label>
-                      <input type="text" class="form-control" id="Prodi" name="prodi" placeholder="Masukkan Prodi" required>
-                  </div>
-                  <div class="form-group">
-                      <label for="Semester">Semester</label>
-                      <input type="number" class="form-control" id="Semester" name="semester" placeholder="Masukkan Semester" required>
-                  </div>
-                  <div class="form-group">
-                      <label for="SKS">SKS</label>
-                      <input type="number" class="form-control" id="SKS" name="sks" placeholder="Masukkan SKS" required>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			  Tambah Data
+			</button>
 
-        <!-- Table -->
-        <table class="table table-hover mt-4">
-          <thead>
-            <tr>
-              <th scope="col">Nim</th>
-              <th scope="col">Nama</th>
-              <th scope="col">Prodi</th>
-              <th scope="col">Sks</th>
-              <th scope="col">Semester</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($Mahasiswa as $mhs): ?>
-              <tr>
-                <th scope="row"><?= $mhs->nim; ?></th> <!-- Jika $mhs adalah objek -->
-                <td><?= $mhs->nama; ?></td>
-                <td><?= $mhs->prodi; ?></td>
-                <td><?= $mhs->sks; ?></td>
-                <td><?= $mhs->semester; ?></td>
-                <td>            
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal<?= $mhs->nim; ?>">
-          Ubah 
-        </button>
-                  <a href="<?= base_url(); ?>Mahasiswa/hapus/<?= $mhs->nim; ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin');">Hapus</a>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-        </div>
-    </div>
+			<!-- awal flashdata -->
+			<?php if($this->session->flashdata('flash')) : ?>
+				<div class="row mt-3">
+					<div class="col md-8">
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+					Data Mahasiswa<strong>Berhasil</strong><?= $this->session->flashdata('flash');?>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+					</div>
+				</div>
+				<?php endif; ?>
+			<!-- akhir flashdata -->
+
+
+			<div class="row mt-3">
+				<div class="col-mt-6">
+				  <form action="" method="post">
+					<div class="input-group">
+					 <input type="text" class="form-control" placeholder="cari data mahasiswa..." name="keyword">
+					 <div class="input-group-append">
+					  <button class="btn btn-primary" type="submit">cari</button>	
+					 </div>
+					</div> 
+				  </form>
+				</div>
+			</div>
+
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Tambah Data</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <form action="<?= base_url('mahasiswa') ?>" method="post">
+			        <div class="form group">
+			        	<label for="kode">Kode</label>
+			        	<input type="numeric" name="kode" class="form-control" id="kode" placeholder="Masukan Kode">
+					<small class="form-text text-danger"><?= form_error('kode') ?></small>
+				</div>
+
+			        <div class="form group">
+			        	<label for="matakuliah">Matakuliah</label>
+			        	<input type="text" name="matakuliah"class="form-control" id="matakuliah" placeholder="Masukan matakuliah">
+					   <small class="form-text text-danger"><?= form_error('matakuliah') ?></small>
+			        </div>
+
+			        <div class="form group">
+			        	<label for="sks">Sks</label>
+			        	<input type="numeric" name="sks" class="form-control" id="sks" placeholder="Masukan sks">
+					   <small class="form-text text-danger"><?= form_error('sks') ?></small>
+			        </div>
+
+			        <div class="form group">
+			        	<label for="semester">Semester</label>
+			        	<input type="numeric" name="semester"class="form-control" id="semester" placeholder="Masukan Semester">
+					   <small class="form-text text-danger"><?= form_error('semester') ?></small>
+			        </div>
+			        <div class="form group">
+			        	<label for="jurusan">Jurusan</label>
+			        	<select class="form-select" id="jurusan" name="jurusan">
+						<option value="">Pilihan</option>
+						<?php foreach($jurusan as $j):?>
+						<option><?php echo $j['namajurusan']; ?></option>
+						<?php endforeach; ?>
+					</select>
+					<small class="form-text text-danger"><?= form_error('jurusan') ?></small>
+				</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			        <button type="submit" class="btn btn-primary">Save changes</button>
+			      </div>
+			      </form>
+			    </div>
+			  </div>
+			</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Kode</th>
+      <th scope="col">Matakuliah</th>
+      <th scope="col">Sks</th>
+      <th scope="col">Semester</th>
+      <th scope="col">Jurusan</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($mahasiswa as $mhs): ?>
+    	<tr>
+    		<th scope="row"><?=$mhs['kode']; ?></th>
+    		<td><?=$mhs['matakuliah']; ?></td>
+    		<td><?=$mhs['sks']; ?></td>
+    		<td><?=$mhs['semester']; ?></td>
+    		<td><?=$mhs['jurusan']; ?></td>
+    		<td>
+    			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal<?=$mhs['id'];?>">
+			  Ubah
+			</button>
+    			<a href="<?= base_url(); ?>mahasiswa/hapus/<?= $mhs['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin');">Hapus</a>
+    		</td>
+    	</tr>
+        <?php endforeach;?>
+  </tbody>
+</table>
+		</div>
+	</div>
 </div>
 
+
+<!-- awal modal edit -->
+<?php $no = 0 ; foreach ($mahasiswa as $mhs): $no++; ?>
+    <div class="modal fade" id="editModal<?=$mhs['id'];?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="editModalLabel">form Edit Data</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+              <?=form_open_multipart('mahasiswa/ubah'); ?>
+              <input type="hidden" name="id" value="<?=$mhs['id']; ?>">
+			        <div class="form group">
+			        	<label for="kode">Kode</label>
+			        	<input type="numeric" name="kode" class="form-control" value="<?=$mhs['kode']; ?>" id="kode" placeholder="Masukan Kode" readonly>
+			        </div>
+
+			        <div class="form group">
+			        	<label for="matakuliah">Matakuliah</label>
+			        	<input type="text" name="matakuliah"class="form-control" value="<?=$mhs['matakuliah']; ?>"id="matakuliah" placeholder="Masukan matakuliah">
+			        </div>
+
+			        <div class="form group">
+			        	<label for="sks">Sks</label>
+			        	<input type="numeric" name="sks" class="form-control" value="<?=$mhs['sks']; ?>"id="sks" placeholder="Masukan sks">
+			        </div>
+
+			        <div class="form group">
+			        	<label for="semester">Semester</label>
+			        	<input type="numeric" name="semester"class="form-control" value="<?=$mhs['semester']; ?>"id="semester" placeholder="Masukan Semester">
+			        </div>
+
+			        <div class="form group">
+			        	<label for="jurusan">Jurusan</label>
+					   <select class="form-select" id="jurusan" name="jurusan">
+						<option value="">Pilihan</option>
+						<?php foreach($jurusan as $j):?>
+						<option><?php echo $j['nama jurusan']; ?></option>
+						<?php endforeach; ?>
+					</select>   	
+				</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			        <button type="submit" class="btn btn-primary">Ubah</button>
+			      </div>
+			    </form>
+			    </div>
+			  </div>
+			</div>
+		<?php endforeach;  ?>
+
+<!-- akhir modal edit -->
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-
-<!-- Modal Edit -->
-<?php foreach ($Mahasiswa as $mhs): ?>
-<div class="modal fade" id="editModal<?= $mhs->nim; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Form Edit Data</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('Mahasiswa/Ubah/'.$mhs->nim); ?>" method="post">
-                    <input type="hidden" name="nim" value="<?= $mhs->nim; ?>">
-                    <div class="form-group">
-                        <label for="NIM">NIM</label>
-                        <input type="number" class="form-control" value="<?= $mhs->nim; ?>" id="NIM" name="nim" required>
-                   </div>
-
-                    <div class="form-group">
-                        <label for="Nama_mahasiswa">Nama Mahasiswa</label>
-                        <input type="text" class="form-control" value="<?= $mhs->nama; ?>" id="Nama_mahasiswa" name="nama" placeholder="Masukkan Nama Mahasiswa" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="Prodi">Prodi</label>
-                        <input type="text" class="form-control" value="<?= $mhs->prodi; ?>" id="Prodi" name="prodi" placeholder="Masukkan Prodi" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="Semester">Semester</label>
-                        <input type="number" class="form-control" value="<?= $mhs->semester; ?>" id="Semester" name="semester" placeholder="Masukkan Semester" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="SKS">SKS</label>
-                        <input type="number" class="form-control" value="<?= $mhs->sks; ?>" id="SKS" name="sks" placeholder="Masukkan SKS" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Ubah Data</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<?php endforeach; ?>
-
-
-        
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-
-<!-- Akhir modal edit
