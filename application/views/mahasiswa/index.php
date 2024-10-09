@@ -173,7 +173,7 @@
 					   <select class="form-select" id="jurusan" name="jurusan">
 						<option value="">Pilihan</option>
 						<?php foreach($jurusan as $j):?>
-						<option><?php echo $j['nama jurusan']; ?></option>
+						<option><?php echo $j['namajurusan']; ?></option>
 						<?php endforeach; ?>
 					</select>   	
 				</div>
