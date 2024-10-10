@@ -46,12 +46,4 @@
     </nav>
 
 
-    <!-- <div class="jumbotron jumbotron-fluid ">
-            <div class="container text-center">
-                <h1 class="display-4">WELCOME TO WEBSITE CODEIGNITER</h1>
-                <p class="lead">CREATED BY FRENGKLIN MATATULA</p>
-            </div>
-        </div> -->
-
-
-    <!-- <div class="div container"> -->
+    
