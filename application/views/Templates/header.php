@@ -35,6 +35,7 @@
                         <a class="nav-item nav-link" href=" <?= base_url(); ?> ">Beranda <span class="sr-only">(current)</span></a>
                         <a class="nav-item nav-link" href="<?= base_url(); ?>mahasiswa">Mahasiswa</a>
                         <a class="nav-item nav-link" href="<?= base_url(); ?>dosen">Dosen</a>
+                        <a class="nav-item nav-link" href="<?= base_url('admin/login'); ?>">Login</a>
                         <a class="nav-item nav-link" href="<?= base_url(); ?>jurusan">jurusan</a>
                         <a class="nav-item nav-link" href=" <?= base_url(); ?>#about">About</a>
                         <a class="nav-item nav-link" href="<?= base_url(); ?>#kontak">kontak kami</a>
