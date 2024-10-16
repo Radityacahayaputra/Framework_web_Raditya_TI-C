@@ -10,7 +10,10 @@ class Dosen extends CI_Controller {
     }
 
     public function index()
-    {
+    {   
+        if (empty($this->session->userdata('email'))) {
+            redirect('login');
+        }
         $data['judul'] = 'Halaman Dosen';
         // akhir memasukan data berdasarkan keyword
         $data['dosen'] = $this->Dosen_model->getAllDosen();

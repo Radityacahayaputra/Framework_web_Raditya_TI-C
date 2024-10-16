@@ -6,12 +6,12 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 		<!--awal validasi eror-->
-		<?php if(validation_errors()):?>
+		<!--<?php if(validation_errors()):?>
 		<div class="alert alert-danger" role="alert">
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			<?= validation_errors();?>
 		</div>
-		<?php endif;?>
+		<?php endif;?>-->
 		<!--akhir validasi eror-->
 
       <div class="row mt-3">
